@@ -5,11 +5,12 @@
 exports.index = function(req, res){
   res.render('index', { 
   	title: 'Lessons page', 
-  	content: 'Lorem ipsum' });
+  	content: 'Lorem ipsum' 
+  });
 };
 
 exports.result = function(req, res){
   res.render('index', { 
-  	title: 'Lessons page', 
-  	content: 'You see result on this page' });
+  	title: 'Result page Ahaaaa'
+  });
 };
