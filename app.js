@@ -7,9 +7,7 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , models = require('./models/model')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , lessons = require('./routes/lessons')
+  , routers = require('./routes/routes')
   , mongoose = require('mongoose');
 
 var app = express();
@@ -44,16 +42,13 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
+// routers
+routers.route(app);
+
 // models
 models.defineModels(function(){
   app.Lesson = Lesson = mongoose.model('Lesson');
 })
-
-app.get('/', routes.index);
-app.get('/users', user.list);
-app.get('/users/:id', user.id);
-app.get('/lessons', lessons.index);
-app.get('/lessons/result', lessons.result);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

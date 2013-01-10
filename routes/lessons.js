@@ -7,7 +7,7 @@ var  mongoose = require('mongoose')
 
 
 exports.index = function(req, res){
-  var silence = new Lesson({ name: 'Silence' });
+  var silence = new Lesson({ name: 'console.log(1)' });
   res.render('index', { 
   	title: 'Lessons page', 
   	content: silence.name 
