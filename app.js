@@ -4,16 +4,20 @@
  */
 
 var express = require('express')
+  , http = require('http')
+  , path = require('path')
+  , models = require('./models/model')
   , routes = require('./routes')
   , user = require('./routes/user')
   , lessons = require('./routes/lessons')
-  , http = require('http')
-  , path = require('path');
+  , mongoose = require('mongoose');
 
 var app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 8000);
+  app.set('mongo.host', process.env.MONGO_HOST || '127.0.0.1');
+  app.set('mongo.db', process.env.MONGO_DB || 'db'); 
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -27,9 +31,23 @@ app.configure(function(){
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
+// db
+mongoose.connect('mongodb://' + app.get('mongo.host') + '/' + app.get('mongo.db'));
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  console.log('db connect')
+});
+
 app.configure('development', function(){
   app.use(express.errorHandler());
 });
+
+// models
+models.defineModels(function(){
+  app.Lesson = Lesson = mongoose.model('Lesson');
+})
 
 app.get('/', routes.index);
 app.get('/users', user.list);

@@ -2,10 +2,15 @@
 	Lessons page
 */
 
+var  mongoose = require('mongoose')
+	, express = require('express');
+
+
 exports.index = function(req, res){
+  var silence = new Lesson({ name: 'Silence' });
   res.render('index', { 
   	title: 'Lessons page', 
-  	content: 'Lorem ipsum' 
+  	content: silence.name 
   });
 };
 
